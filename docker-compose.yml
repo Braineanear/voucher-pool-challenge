@@ -24,6 +24,8 @@ services:
     environment:
       - PORT=3001
       - MONGODB_URI=mongodb://mongodb:27017/voucher-pool-db
+      - OFFER_SERVICE_PORT=3002
+      - OFFER_SERVICE_HOST=offer
     networks:
       - backend
     restart: always

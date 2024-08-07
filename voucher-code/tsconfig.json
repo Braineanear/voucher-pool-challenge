@@ -40,12 +40,8 @@
       "es2017",
       "esnext.asynciterable",
       "es2021"
-    ],
-    "paths": {
-      "@shared/*": ["src/common/*"],
-      "@modules/*": ["src/modules/*"]
-    }
+    ]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "voucher-code.controller.ts"],
   "exclude": ["dist", "node_modules"]
 }

@@ -27,12 +27,9 @@ export class VoucherCodeController {
   @ApiResponse({ status: HttpStatus.OK, description: 'The voucher code has been successfully validated.' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Invalid voucher code.' })
   async validate(@Body() validateVoucherDto: ValidateVoucherDto): Promise<{ discount: number }> {
-    const response = await firstValueFrom(
+    const { discount } = await firstValueFrom(
       this.voucherServiceClient.send('validate_voucher_code', validateVoucherDto),
     );
-
-    const { voucher, discount } = response;
-    await firstValueFrom(this.voucherServiceClient.send('mark_voucher_as_used', { code: voucher.code }));
 
     return { discount };
   }

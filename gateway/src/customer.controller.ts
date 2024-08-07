@@ -54,7 +54,7 @@ export class CustomerController {
     @Body() updateCustomerDto: UpdateCustomerDto,
   ) {
     const response = await firstValueFrom(
-      this.customerServiceClient.send('update_customer', { email, updateCustomerDto })
+      this.customerServiceClient.send('update_customer', { email, payload: updateCustomerDto })
     );
 
     return response;

@@ -1,0 +1,28 @@
+# Ignore node_modules
+
+# Ignore built files
+dist
+
+# Ignore Git-related files
+.git
+.gitignore
+
+# Ignore Docker-related files
+Dockerfile
+
+# Ignore local environment variables
+.env
+
+# Ignore logs
+*.log
+
+# Ignore documentation
+README.md
+docs
+
+# Ignore test files
+test
+tests
+__tests__
+*.spec.ts
+*.test.ts

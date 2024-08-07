@@ -9,31 +9,33 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 export class SpecialOfferController {
   constructor(private readonly specialOfferService: SpecialOfferService) {}
 
-  @MessagePattern({ cmd: 'create_special_offer' })
+  @MessagePattern('create_special_offer')
   create(@Payload() createSpecialOfferDto: CreateSpecialOfferDto): Promise<SpecialOffer> {
     console.log(createSpecialOfferDto)
     return this.specialOfferService.create(createSpecialOfferDto);
   }
 
-  @MessagePattern({ cmd: 'get_special_offers' })
+  @MessagePattern('get_special_offers')
   findAll(): Promise<SpecialOffer[]> {
     return this.specialOfferService.findAll();
   }
 
-  @MessagePattern({ cmd: 'get_special_offer' })
+  @MessagePattern('get_special_offer')
   findOne(@Payload('name') name: string): Promise<SpecialOffer> {
     return this.specialOfferService.findOne(name);
   }
 
-  @MessagePattern({ cmd: 'update_special_offer' })
+  @MessagePattern('update_special_offer')
   update(
     @Payload('name') name: string,
-    @Payload() updateSpecialOfferDto: UpdateSpecialOfferDto,
+    @Payload('payload') updateSpecialOfferDto: UpdateSpecialOfferDto,
   ): Promise<SpecialOffer> {
+    console.log('name', name);
+    console.log('dto', updateSpecialOfferDto)
     return this.specialOfferService.update(name, updateSpecialOfferDto);
   }
 
-  @MessagePattern({ cmd: 'delete_special_offer' })
+  @MessagePattern('delete_special_offer')
   remove(@Payload('name') name: string): Promise<void> {
     return this.specialOfferService.remove(name);
   }

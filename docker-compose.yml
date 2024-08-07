@@ -1,5 +1,3 @@
-version: '3.7'
-
 services:
   customer:
     build:
@@ -9,6 +7,7 @@ services:
     depends_on:
       - mongodb
     environment:
+      - PORT=3000
       - MONGODB_URI=mongodb://mongodb:27017/voucher-pool-db
     networks:
       - backend
@@ -23,13 +22,14 @@ services:
     depends_on:
       - mongodb
     environment:
+      - PORT=3001
       - MONGODB_URI=mongodb://mongodb:27017/voucher-pool-db
     networks:
       - backend
     restart: always
     hostname: voucher
 
-  special-offer:
+  offer:
     build:
       context: ./special-offer
     ports:
@@ -37,6 +37,7 @@ services:
     depends_on:
       - mongodb
     environment:
+      - PORT=3002
       - MONGODB_URI=mongodb://mongodb:27017/voucher-pool-db
     networks:
       - backend
@@ -47,21 +48,36 @@ services:
     build:
       context: ./gateway
     ports:
-      - "80:80"
+      - "8080:8080"
+    depends_on:
+      - customer
+      - voucher
+      - offer
+    environment:
+      - PORT=8080
+      - CUSTOMER_SERVICE_PORT=3000
+      - CUSTOMER_SERVICE_HOST=customer
+      - VOUCHER_SERVICE_PORT=3001
+      - VOUCHER_SERVICE_HOST=voucher
+      - OFFER_SERVICE_PORT=3002
+      - OFFER_SERVICE_HOST=offer
     networks:
       - backend
     restart: always
     hostname: gateway
 
   mongodb:
-    image: mongo:4.4
+    image: mongo:6.0
     ports:
       - "27017:27017"
     volumes:
-      - mongo-data:/data/db
+      - mongodata:/data/db
+    networks:
+      - backend
 
 networks:
   backend:
     driver: bridge
+
 volumes:
-  mongo-data:
+  mongodata:

@@ -47,7 +47,6 @@ export class VoucherCodeService {
     // Fetch the special offer to get the discount
 
     const specialOffer = await lastValueFrom(this.client.send({ cmd: 'findOne' }, { name: voucher.specialOfferName }));
-    const specialOffer = await this.specialOfferService.findOne(voucher.specialOfferName);
     if (!specialOffer) {
       throw new NotFoundException('Special offer not found.');
     }

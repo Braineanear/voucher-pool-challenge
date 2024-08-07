@@ -15,19 +15,34 @@ export class SpecialOfferController {
   @ApiResponse({ status: HttpStatus.CREATED, description: 'The special offer has been successfully created.' })
   @ApiResponse({ status: HttpStatus.BAD_REQUEST, description: 'Invalid data.' })
   async create(@Body() createSpecialOfferDto: CreateSpecialOfferDto) {
-    const response = await firstValueFrom(
-      this.offerServiceClient.send('create_special_offer', createSpecialOfferDto),
-    );
-    return response;
+    try{
+      console.log('Received DTO:', createSpecialOfferDto);
+
+      const response = await firstValueFrom(
+        this.offerServiceClient.send('create_special_offer', createSpecialOfferDto),
+      );
+
+      console.log('After response:', response);
+
+      return response;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
   }
 
   @Get()
   @ApiOperation({ summary: 'Get all special offers' })
   @ApiResponse({ status: HttpStatus.OK, description: 'Retrieved all special offers.' })
   async findAll() {
+    console.log('Fetching all special offers');
+
     const response = await firstValueFrom(
       this.offerServiceClient.send('get_special_offers', {})
     );
+
+    console.log('All special offers:', response);
+
     return response;
   }
 
@@ -36,9 +51,14 @@ export class SpecialOfferController {
   @ApiResponse({ status: HttpStatus.OK, description: 'Retrieved the special offer.' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Special offer not found.' })
   async findOne(@Param('name') name: string) {
+    console.log('Fetching special offer with name:', name);
+
     const response = await firstValueFrom(
       this.offerServiceClient.send('get_special_offer', { name })
     );
+
+    console.log('Special offer:', response);
+
     return response;
   }
 
@@ -50,9 +70,14 @@ export class SpecialOfferController {
     @Param('name') name: string,
     @Body() updateSpecialOfferDto: UpdateSpecialOfferDto,
   ) {
+    console.log('Updating special offer with name:', name, 'DTO:', updateSpecialOfferDto);
+
     const response = await firstValueFrom(
-      this.offerServiceClient.send('update_special_offer', { name, updateSpecialOfferDto })
+      this.offerServiceClient.send('update_special_offer', { name, payload: updateSpecialOfferDto })
     );
+
+    console.log('Updated special offer:', response);
+
     return response;
   }
 
@@ -62,8 +87,12 @@ export class SpecialOfferController {
   @ApiResponse({ status: HttpStatus.NO_CONTENT, description: 'The special offer has been successfully deleted.' })
   @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Special offer not found.' })
   async remove(@Param('name') name: string): Promise<void> {
+    console.log('Deleting special offer with name:', name);
+
     await firstValueFrom(
       this.offerServiceClient.send('delete_special_offer', { name })
     );
+
+    console.log('Deleted special offer with name:', name);
   }
 }

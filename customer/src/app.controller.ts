@@ -27,7 +27,7 @@ export class CustomerController {
   @MessagePattern('update_customer')
   update(
     @Payload('email') email: string,
-    @Payload() updateCustomerDto: UpdateCustomerDto,
+    @Payload('payload') updateCustomerDto: UpdateCustomerDto,
   ): Promise<Customer> {
     return this.customerService.update(email, updateCustomerDto);
   }
